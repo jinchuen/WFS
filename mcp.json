@@ -1,0 +1,22 @@
+{
+  "contexts": {
+    "mui": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/mui", "./src"]
+    },
+    "default": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/default", "./src"]
+    }
+  },
+  "routes": [
+    {
+      "match": "mui|material[-\\s]?ui",
+      "use": "mui"
+    },
+    {
+      "match": ".*",
+      "use": "default"
+    }
+  ]
+}

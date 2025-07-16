@@ -1,0 +1,63 @@
+import React, { useState, useCallback, memo } from 'react';
+
+// 🧠 Memoized Product Item with expensive rendering
+const ProductItem = memo(({ product, onAddToCart }) => {
+  console.log('🛒 Rendering:', product.name);
+
+  // Simulate slow render
+  let now = performance.now();
+  while (performance.now() - now < 20) {} // 20ms delay
+
+  return (
+    <div style={{ border: '1px solid #ddd', padding: '10px', margin: '10px' }}>
+      <p>{product.name}</p>
+      <button onClick={() => onAddToCart(product)}>Add to Cart</button>
+    </div>
+  );
+});
+
+const SideNav = () => {
+  const [cart, setCart] = useState([]);
+  const [count, setCount] = useState(0);
+
+  const products = [
+    { id: 1, name: '🚀 Rocket' },
+    { id: 2, name: '🐱 Cat' },
+    { id: 3, name: '🎧 Headphones' },
+  ];
+
+  // 🧠 useCallback: stable reference to avoid re-rendering ProductItem
+  const handleAddToCart = useCallback(
+    (product) => {
+      setCart((prevCart) => [...prevCart, product]);
+    },
+    [] // 🔒 no dependencies = always the same function reference
+  );
+
+  return (
+    <div>
+      <h2>🛍️ Product List</h2>
+      {products.map((product) => (
+        <ProductItem
+          key={product.id}
+          product={product}
+          onAddToCart={handleAddToCart}
+        />
+      ))}
+
+      <h3>🧺 Cart: {cart.length} items</h3>
+      <ul>
+        {cart.map((item, idx) => (
+          <li key={idx}>{item.name}</li>
+        ))}
+      </ul>
+
+      <hr />
+
+      <button onClick={() => setCount((c) => c + 1)}>Click Me ({count})</button>
+      <p>This button does not re-render product items anymore 🚀</p>
+    </div>
+  );
+};
+
+export default SideNav;
