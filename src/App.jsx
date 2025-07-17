@@ -1,12 +1,11 @@
 import React from 'react';
-import AppRoutes from './AppRoutes';
-import SideNav from './components/theme-layout/SideNav';
+// eslint-disable-next-line import/no-unresolved
+import Body from './components/theme-layout/body'; 
 
 function App() {
   return (
-      <>
-        <SideNav />
-        <AppRoutes />
+    <>
+      <Body />
     </>
   );
 }
