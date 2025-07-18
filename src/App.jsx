@@ -1,12 +1,13 @@
+/* eslint-disable import/no-unresolved */
 import React from 'react';
-// eslint-disable-next-line import/no-unresolved
-import Body from './components/theme-layout/body'; 
+import { SidenavProvider } from './components/theme-layout/SidenavContext';
+import Body from './components/theme-layout/body';
 
 function App() {
   return (
-    <>
+    <SidenavProvider>
       <Body />
-    </>
+    </SidenavProvider>
   );
 }
 

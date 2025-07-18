@@ -1,22 +1,24 @@
 /* eslint-disable import/no-unresolved */
-import React, { useState } from 'react'
+import React from 'react'
 // eslint-disable-next-line no-unused-vars
 import { useSpring, animated } from '@react-spring/web'
-import AppRoutes from './../../AppRoutes'
+import AppRoutes from '../../AppRoutes'
 import SideNav from './SideNav'
+import { useSidenav } from './useSidenav'
 
 const Body = () => {
-	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+	const { isOpenDrawer } = useSidenav()
 
 	const mainSpring = useSpring({
-		marginLeft: isDrawerOpen ? '16.6667%' : '0%',
+		marginLeft: isOpenDrawer ? '16.6667%' : '5%', // Fixed: 0% when closed, 16.6667% when open
+		marginTop: '1.5%',
 		config: { duration: 200 }
 	})
 
 	return (
 		<>
-			<SideNav isOpenDrawer={isDrawerOpen} setIsOpenDrawer={setIsDrawerOpen} />
-
+			<SideNav />
+			
 			{/* 🪄 Animated content shift */}
 			<animated.div style={mainSpring}>
 				<AppRoutes />

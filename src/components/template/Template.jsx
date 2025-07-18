@@ -2,7 +2,11 @@ import React from 'react'
 
 const Template = () => {
 	return (
-		<div>Template</div>
+		<>
+		<div className='h-[100rem] bg-amber-800'></div>
+			
+		</>
+		
 	)
 }
 
