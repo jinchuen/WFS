@@ -111,6 +111,8 @@ If you need to add more UI libraries (such as Font Awesome or UIverse), you can 
 npm install @fortawesome/react-fontawesome
 npm install uiverse
 npm i -D daisyui@latest
+npm install @heroicons/react
+npm install @tanstack/react-table
 ```
 
 ## 📁 Project Structure

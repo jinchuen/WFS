@@ -6,6 +6,8 @@ import AppRoutes from '../../AppRoutes'
 import SideNav from './SideNav'
 import { useSidenav } from './useSidenav'
 import Breadcrumbs from './breadcrumbs'
+import AlterComponents from '../../helper-components/alter/AlterComponents'
+import { AlterProvider } from '../../helper-components/alter/AlterContext'
 
 const Body = () => {
 	const { isOpenDrawer } = useSidenav()
@@ -31,15 +33,18 @@ const Body = () => {
 
 	return (
 		<>
-			<SideNav />
-			{/* 🪄 Animated content shift */}
-			<animated.div style={mainSpring}>
-				<animated.div style={mainSpringBreadcrumbs} >
-					<Breadcrumbs />
+			<AlterProvider>
+				<AlterComponents />
+				<SideNav />
+				{/* 🪄 Animated content shift */}
+				<animated.div style={mainSpring}>
+					<animated.div style={mainSpringBreadcrumbs} >
+						<Breadcrumbs />
+					</animated.div>
+					<animated.hr style={hrSpring} className="w-full mt-5 mb-2" />
+					<AppRoutes />
 				</animated.div>
-				<animated.hr style={hrSpring} className="w-full mt-5 mb-2" />
-				<AppRoutes />
-			</animated.div>
+			</AlterProvider>
 		</>
 	)
 }

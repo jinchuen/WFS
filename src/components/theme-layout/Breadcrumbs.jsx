@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useTrail, animated } from '@react-spring/web'
 
 // Converts "my-page" => "My Page"
@@ -33,14 +33,12 @@ const Breadcrumbs = () => {
 			{trail.map((style, index) => {
 				const breadcrumb = breadcrumbs[index]
 				return (
-					<>
 					<animated.div key={breadcrumb.path} style={style} className="flex items-center gap-1">
 						{index !== 0 && <span className="text-base-content/40">{'>'}</span>}
-						<Link to={breadcrumb.path} className="hover:text-base-content">
+						<span className="hover:text-base-content cursor-default">
 							{breadcrumb.label}
-						</Link>
+						</span>
 					</animated.div>
-					</>
 				)
 			})}
 		</div>
