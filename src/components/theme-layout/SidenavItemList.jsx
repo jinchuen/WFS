@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useMemo, useState } from 'react'
 import { ChevronRight, ChevronDown } from 'lucide-react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { sidenavData } from './sidenavData'
 import { useSidenav } from './useSidenav'
 
@@ -81,7 +82,9 @@ MenuItem.displayName = 'MenuItem'
 
 // Main SidenavItemList component
 const SidenavItemList = memo(({ className = '' }) => {
-  const { currentPath, expandedItems, setExpandedItems, setCurrentPath, setDrawerOpen } = useSidenav()
+  const { expandedItems, setExpandedItems, setCurrentPath, setDrawerOpen } = useSidenav()
+  const navigate = useNavigate()
+  const location = useLocation()
 
   // Accordion logic: only one parent open at a time
   const handleToggle = useCallback((itemId) => {
@@ -94,14 +97,17 @@ const SidenavItemList = memo(({ className = '' }) => {
   }, [setExpandedItems])
 
   const handleNavigate = useCallback((path) => {
+    // Actually navigate to the route
+    navigate(path)
+    // Update the sidenav state
     setCurrentPath(path)
     setDrawerOpen(false) // Close the drawer on navigation
-  }, [setCurrentPath, setDrawerOpen])
+  }, [navigate, setCurrentPath, setDrawerOpen])
 
   // Optimized active state check - memoized for performance
   const isPathActive = useCallback((path) => {
-    return currentPath === path || currentPath.startsWith(path + '/')
-  }, [currentPath])
+    return location.pathname === path || location.pathname.startsWith(path + '/')
+  }, [location.pathname])
 
   // Recursive function to render menu items with proper active states
   const renderMenuItem = useCallback((item, level = 0) => {

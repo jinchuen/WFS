@@ -1,5 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import { useContext, useCallback } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { SidenavContext } from './SidenavContext'
 
 // Custom hook to use sidenav context
@@ -14,8 +15,14 @@ export const useSidenav = () => {
 // Hook for navigation with auto-expand functionality
 export const useSidenavNavigation = () => {
   const { setCurrentPath, toggleExpandedItem, expandedItems } = useSidenav()
+  const navigate = useNavigate()
+  const location = useLocation()
   
-  const navigate = useCallback((path, shouldAutoExpand = true) => {
+  const navigateTo = useCallback((path, shouldAutoExpand = true) => {
+    // Actually navigate to the route
+    navigate(path)
+    
+    // Update sidenav state
     setCurrentPath(path)
     
     // Auto-expand parent items based on path
@@ -36,7 +43,7 @@ export const useSidenavNavigation = () => {
         }
       })
     }
-  }, [setCurrentPath, toggleExpandedItem, expandedItems])
+  }, [navigate, setCurrentPath, toggleExpandedItem, expandedItems])
 
-  return { navigate }
+  return { navigate: navigateTo, currentPath: location.pathname }
 } 

@@ -1,4 +1,5 @@
-import React, { createContext, useReducer, useMemo, useCallback } from 'react'
+import React, { createContext, useReducer, useMemo, useCallback, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
 // Action types
 const SIDENAV_ACTIONS = {
@@ -83,6 +84,17 @@ const SidenavContext = createContext()
 // Provider component
 export const SidenavProvider = ({ children }) => {
   const [state, dispatch] = useReducer(sidenavReducer, initialState)
+  const location = useLocation()
+
+  // Sync sidenav state with actual browser URL
+  useEffect(() => {
+    if (location.pathname !== state.currentPath) {
+      dispatch({ 
+        type: SIDENAV_ACTIONS.SET_CURRENT_PATH, 
+        payload: location.pathname 
+      })
+    }
+  }, [location.pathname, state.currentPath])
 
   // Memoized actions to prevent unnecessary re-renders
   const toggleDrawer = useCallback(() => dispatch({ type: SIDENAV_ACTIONS.TOGGLE_DRAWER }), [])

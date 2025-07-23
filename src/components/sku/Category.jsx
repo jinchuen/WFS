@@ -26,12 +26,7 @@ import {
   RefreshCw,
 } from "lucide-react"
 import { getCategory } from "../../services/sku/category"
-import { useAlterComponents } from "../../helper-components/alter"
-
-function useAlter() {
-  const { successPrompt, errorPrompt } = useAlterComponents()
-  return { successPrompt, errorPrompt }
-}
+import { toast } from 'react-toastify';
 
 // Enhanced Modal Component
 function Modal({ isOpen, onClose, title, children }) {
@@ -72,19 +67,15 @@ function Modal({ isOpen, onClose, title, children }) {
 }
 
 // Enhanced Form Component
-function RecordForm({ record, onSave, onCancel }) {
+function RecordForm({ record, onSave, onCancel, isLoading }) {
   const [formData, setFormData] = useState({
     code: record?.code || "",
     descs: record?.descs || "",
   })
-  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setIsLoading(true)
-    await new Promise((resolve) => setTimeout(resolve, 800))
-    onSave(formData)
-    setIsLoading(false)
+    await onSave(formData)
   }
 
   return (
@@ -143,14 +134,9 @@ function RecordForm({ record, onSave, onCancel }) {
 }
 
 // Delete Confirmation Component
-function DeleteConfirmation({ record, onConfirm, onCancel }) {
-  const [isLoading, setIsLoading] = useState(false)
-
+function DeleteConfirmation({ record, onConfirm, onCancel, isLoading }) {
   const handleConfirm = async () => {
-    setIsLoading(true)
-    await new Promise((resolve) => setTimeout(resolve, 600))
     onConfirm()
-    setIsLoading(false)
   }
 
   return (
@@ -389,9 +375,11 @@ const Category = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [selectedRecord, setSelectedRecord] = useState(null)
-
-  // useAlter hook (fix usage)
-  const { errorPrompt, successPrompt } = useAlter()
+  
+  // Separate loading states for different operations
+  const [isCreating, setIsCreating] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   // Debounced search term
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
@@ -443,47 +431,110 @@ const Category = () => {
     setSortConfig({ key, direction })
   }
 
-  // CRUD Operations
-  const generateId = () => {
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
-      const r = (Math.random() * 16) | 0
-      const v = c === "x" ? r : (r & 0x3) | 0x8
-      return v.toString(16)
-    })
-  }
-
-  const handleCreate = (data) => {
-    const newRecord = {
-      id: generateId(),
-      ...data,
-      createdate: new Date().toISOString(),
-      updatedate: new Date().toISOString(),
+  const handleCreate = async (data) => {
+    let model = {
+      mode: 'create',
+      data: {
+        code: data.code,
+        descs: data.descs,
+      }
     }
-    setCategoryList([newRecord, ...categoryList])
-    setIsCreateModalOpen(false)
-    setCurrentPage(1)
-  }
-
-  const handleEdit = (data) => {
-    const updatedList = categoryList.map((item) =>
-      item.id === selectedRecord.id ? { ...item, ...data, updatedate: new Date().toISOString() } : item,
-    )
-    setCategoryList(updatedList)
-    setIsEditModalOpen(false)
-    setSelectedRecord(null)
-  }
-
-  const handleDelete = () => {
-    const updatedList = categoryList.filter((item) => item.id !== selectedRecord.id)
-    setCategoryList(updatedList)
-    setIsDeleteModalOpen(false)
-    setSelectedRecord(null)
-
-    // Adjust pagination if needed
-    const newTotalPages = Math.ceil(updatedList.length / itemsPerPage)
-    if (currentPage > newTotalPages && newTotalPages > 0) {
-      setCurrentPage(newTotalPages)
+    try {
+      setIsCreating(true)
+      const data = await getCategory.createUpdateCategory(model)
+      setIsCreateModalOpen(false)
+      setSelectedRecord(null)
+      toast.success(`Category ${data.code} created successfully!`)
+      // Refresh the data after successful creation
+      handleRefresh()
+    }catch(error) {
+      const errorMsg = error.response.data.error
+      if(errorMsg){
+        toast.error(errorMsg)
+      }else{
+        toast.error("An unknown error occurred while creating data. Please try again later.")
+      }
+    }finally{
+      setIsCreating(false)
     }
+    // const newRecord = {
+    //   id: generateId(),
+    //   ...data,
+    //   createdate: new Date().toISOString(),
+    //   updatedate: new Date().toISOString(),
+    // }
+
+
+    // setCategoryList([newRecord, ...categoryList])
+    // setIsCreateModalOpen(false)
+    // setCurrentPage(1)
+  }
+
+  const handleEdit = async (data) => {
+    let model = {
+      mode: 'update',
+      data: {
+        id: selectedRecord.id,
+        code: data.code,
+        descs: data.descs,
+      }
+    }
+    try {
+      setIsEditing(true)
+      const data = await getCategory.createUpdateCategory(model)
+      setIsEditModalOpen(false)
+      setSelectedRecord(null)
+      toast.success(`Category ${data.code} updated successfully!`)
+      // Refresh the data after successful update
+      handleRefresh()
+    }catch(error) {
+      const errorMsg = error.response.data.error
+      if(errorMsg){
+        toast.error(errorMsg)
+      }else{
+        toast.error("An unknown error occurred while updating data. Please try again later.")
+      }
+    }finally{
+      setIsEditing(false)
+    }
+  }
+
+  const handleDelete = async () => {
+    let model = {
+      mode: 'delete',
+      data: {
+        id: selectedRecord.id,
+      }
+    }
+    try {
+      setIsDeleting(true)
+      await getCategory.deleteCategory(model)
+      setIsDeleteModalOpen(false)
+      setSelectedRecord(null)
+      toast.success("Category deleted successfully!")
+      // Refresh the data after successful deletion
+      handleRefresh()
+    }catch(error) {
+      const errorMsg = error.response.data.error
+      if(errorMsg){
+        toast.error(errorMsg)
+      }else{
+        toast.error("An unknown error occurred while deleting data. Please try again later.")
+      }
+    }finally{
+      setIsDeleting(false)
+    }
+
+    // const updatedList = categoryList.filter((item) => item.id !== selectedRecord.id)
+    // setCategoryList(updatedList)
+    // setIsDeleteModalOpen(false)
+    // setSelectedRecord(null)
+
+    // // Adjust pagination if needed
+    // const newTotalPages = Math.ceil(updatedList.length / itemsPerPage)
+    // if (currentPage > newTotalPages && newTotalPages > 0) {
+    //   setCurrentPage(newTotalPages)
+    // }
   }
 
   // Export functionality
@@ -512,14 +563,14 @@ const Category = () => {
     try {
       const res = await getCategory.getCategoryList()
       setCategoryList(res)
-      successPrompt && successPrompt("Categories refreshed!")
+      toast.success("Categories refreshed!")
     } catch {
-      errorPrompt && errorPrompt("An unknown error occurred while refreshing data. Please try again later.")
+      toast.error("An unknown error occurred while refreshing data. Please try again later.")
     } finally {
       setIsRefreshing(false)
       setIsLoading(false)
     }
-  }, [isRefreshing, errorPrompt, successPrompt])
+  }, [isRefreshing])
 
   // Page change handlers (persist to localStorage)
   const handlePageChange = useCallback((page) => {
@@ -568,13 +619,13 @@ const Category = () => {
         const res = await getCategory.getCategoryList()
         setCategoryList(res)
       } catch {
-        errorPrompt && errorPrompt("An unknown error occurred while fetching data. Please try again later.")
+        toast.error("An unknown error occurred while fetching data. Please try again later.")
       } finally {
         setIsLoading(false)
       }
     }
     fetchCategoryList()
-  }, [errorPrompt])
+  }, [])
 
   // Reset to first page when search changes
   useEffect(() => {
@@ -878,7 +929,7 @@ const Category = () => {
 
       {/* Modals */}
       <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} title="Create New Category">
-        <RecordForm onSave={handleCreate} onCancel={() => setIsCreateModalOpen(false)} />
+        <RecordForm onSave={handleCreate} onCancel={() => setIsCreateModalOpen(false)} isLoading={isCreating} />
       </Modal>
 
       <Modal
@@ -896,6 +947,7 @@ const Category = () => {
             setIsEditModalOpen(false)
             setSelectedRecord(null)
           }}
+          isLoading={isEditing}
         />
       </Modal>
 
@@ -915,10 +967,12 @@ const Category = () => {
               setIsDeleteModalOpen(false)
               setSelectedRecord(null)
             }}
+            isLoading={isDeleting}
           />
         )}
       </Modal>
     </div>
+    
   )
 }
 

@@ -108,7 +108,7 @@ const SideNav = memo(({ className = '' }) => {
       {/* Animated Sidebar - Fixed width at 16.666% */}
       <animated.div
         style={drawerSpring}
-        className={`fixed top-0 left-0 h-full w-1/6 z-40 ${className}`}
+        className={`fixed top-0 left-0 h-full w-1/5 z-40 ${className}`}
       >
         {sidebarContent}
       </animated.div>

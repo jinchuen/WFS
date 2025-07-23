@@ -10,5 +10,21 @@ export const getCategory = {
 		} else {
 			throw new Error(response.data.message)
 		}
+	},
+	createUpdateCategory: async(data) => {
+		const response = await axios.patch(API_URL, data)
+		if(response.data.result === 'success') {
+			return response.data.data
+		} else {
+			throw new Error(response.data.message)
+		}
+	},
+	deleteCategory: async(data) => {
+		const response = await axios.patch(API_URL, data)
+		if(response.status !== 204) {
+			throw new Error(response.data.message)
+		} else {	
+			return;
+		}
 	}
 }

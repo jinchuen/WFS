@@ -18,7 +18,8 @@ import {
   Trash2,
   Edit,
   Eye,
-  Star
+  Star,
+  QrCode,
 } from 'lucide-react'
 
 export const sidenavData = [
@@ -31,15 +32,15 @@ export const sidenavData = [
   },
   {
     id: 'analytics',
-    title: 'Analytics',
-    icon: BarChart3,
-    path: '/analytics',
+    title: 'SKU Management',
+    icon: QrCode,
+    path: '/sku',
     children: [
       {
-        id: 'reports',
-        title: 'Reports',
-        icon: FileText,
-        path: '/analytics/reports',
+        id: 'category',
+        title: 'Category',
+        icon: BarChart3,
+        path: '/sku/category',
         children: []
       },
       {

@@ -6,20 +6,20 @@ import AppRoutes from '../../AppRoutes'
 import SideNav from './SideNav'
 import { useSidenav } from './useSidenav'
 import Breadcrumbs from './breadcrumbs'
-import AlterComponents from '../../helper-components/alter/AlterComponents'
-import { AlterProvider } from '../../helper-components/alter/AlterContext'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 const Body = () => {
 	const { isOpenDrawer } = useSidenav()
 
 	const mainSpring = useSpring({
-		marginLeft: isOpenDrawer ? '16.6667%' : '0', // Fixed: 0% when closed, 16.6667% when open
+		marginLeft: isOpenDrawer ? '20%' : '0', // Fixed: 0% when closed, screen width 1/5 when open
 		marginTop: '1.5%',
 		config: { duration: 200 }
 	})
 
 	const mainSpringBreadcrumbs = useSpring({
-		marginLeft: isOpenDrawer ? '2%' : '5%', // Fixed: 0% when closed, 16.6667% when open
+		marginLeft: isOpenDrawer ? '2%' : '5%', // Fixed: 0% when closed, screen width 1/5 when open
 		marginTop: '3px',
 		config: { duration: 200 }
 	})
@@ -33,8 +33,7 @@ const Body = () => {
 
 	return (
 		<>
-			<AlterProvider>
-				<AlterComponents />
+				<ToastContainer role="alert" theme="dark" />
 				<SideNav />
 				{/* 🪄 Animated content shift */}
 				<animated.div style={mainSpring}>
@@ -44,7 +43,6 @@ const Body = () => {
 					<animated.hr style={hrSpring} className="w-full mt-5 mb-2" />
 					<AppRoutes />
 				</animated.div>
-			</AlterProvider>
 		</>
 	)
 }

@@ -113,6 +113,7 @@ npm install uiverse
 npm i -D daisyui@latest
 npm install @heroicons/react
 npm install @tanstack/react-table
+npm install --save react-toastify
 ```
 
 ## 📁 Project Structure
