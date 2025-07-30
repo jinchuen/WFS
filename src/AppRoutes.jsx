@@ -5,6 +5,7 @@ import { Navigate } from "react-router-dom"
 
 import Template from "./components/template/template"
 import Category from "./components/sku/Category"
+import Sku from "./components/sku/sku"
 
 const AppRoutes = () => {
   return (
@@ -17,7 +18,7 @@ const AppRoutes = () => {
       <Route path="/analytics/insights" element={<Template />} />
       
       {/* SKU Routes */}
-      <Route path="/sku" element={<Template />} />
+      <Route path="/sku" element={<Sku />} />
       <Route path="/sku/category" element={<Category />} />
       
       {/* Content Routes */}

@@ -31,23 +31,23 @@ export const sidenavData = [
     children: []
   },
   {
-    id: 'analytics',
+    id: 1,
     title: 'SKU Management',
     icon: QrCode,
     path: '/sku',
     children: [
       {
-        id: 'category',
+        id: 2,
         title: 'Category',
         icon: BarChart3,
         path: '/sku/category',
         children: []
       },
       {
-        id: 'insights',
-        title: 'Insights',
+        id: 3,
+        title: 'SKU',
         icon: Eye,
-        path: '/analytics/insights',
+        path: '/sku',
         children: []
       }
     ]
