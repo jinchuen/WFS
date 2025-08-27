@@ -20,6 +20,8 @@ import {
   Eye,
   Star,
   QrCode,
+  Archive,
+  ClipboardList,
 } from 'lucide-react'
 
 export const sidenavData = [
@@ -53,16 +55,16 @@ export const sidenavData = [
     ]
   },
   {
-    id: 'content',
-    title: 'Content',
-    icon: Folder,
-    path: '/content',
+    id: 'inventory',
+    title: 'Inventory',
+    icon: Archive,
+    path: '/inventory',
     children: [
       {
-        id: 'documents',
-        title: 'Documents',
-        icon: FileText,
-        path: '/content/documents',
+        id: 'inventory-in-stock',
+        title: 'Inventory in Stock',
+        icon: ClipboardList,
+        path: '/inventory/inventory-in-stock',
         children: []
       },
       {

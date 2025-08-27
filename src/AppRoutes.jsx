@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom"
 import Template from "./components/template/template"
 import Category from "./components/sku/Category"
 import Sku from "./components/sku/sku"
+import InStock from "./components/inventory/in-stock"
 
 const AppRoutes = () => {
   return (
@@ -22,9 +23,9 @@ const AppRoutes = () => {
       <Route path="/sku/category" element={<Category />} />
       
       {/* Content Routes */}
-      <Route path="/content" element={<Template />} />
-      <Route path="/content/documents" element={<Template />} />
-      <Route path="/content/media" element={<Template />} />
+      <Route path="/inventory" element={<Navigate to="/inventory/inventory-in-stock" replace />} />
+      <Route path="/inventory/inventory-in-stock" element={<InStock />} />
+      <Route path="/inventory/media" element={<Template />} />
       
       {/* Users Routes */}
       <Route path="/users" element={<Template />} />
