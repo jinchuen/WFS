@@ -5,7 +5,7 @@ import { MenuIcon, X } from 'lucide-react'
 import { useSpring, animated, config } from '@react-spring/web'
 import SidenavItemList from './SidenavItemList'
 import { useSidenav } from './useSidenav'
-import Breadcrumbs from './breadcrumbs'
+import Breadcrumbs from './Breadcrumbs'
 
 // Memoized drawer button component
 const DrawerButton = memo(({ onOpen, className = '' }) => (
