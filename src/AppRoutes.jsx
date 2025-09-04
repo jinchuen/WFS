@@ -47,7 +47,7 @@ const AppRoutes = () => {
       <Route path="/help" element={<Template />} />
 
       {/* Login */}
-      <Route path="/login" element={<Login />} />
+      <Route path="/authorization/login" element={<Login />} />
 
       {/* Catch-all route */}
       <Route path="*" element={<Template />} />
