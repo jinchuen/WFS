@@ -1,14 +1,12 @@
 /* eslint-disable import/no-unresolved */
-// AppRoutes.jsx
-import { Routes, Route } from "react-router-dom"
-import { Navigate } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom";
 
-import Template from "./components/template/Template"
-import Category from "./components/sku/Category"
-import Sku from "./components/sku/Sku"
-import InStock from "./components/inventory/in-stock"
+import Template from "./components/template/Template";
+import Category from "./components/sku/Category";
+import Sku from "./components/sku/Sku";
+import InStock from "./components/inventory/in-stock";
 
-import Login from "./components/auth/login"
+import Login from "./components/auth/login";
 
 const AppRoutes = () => {
   return (
@@ -49,9 +47,12 @@ const AppRoutes = () => {
       <Route path="/help" element={<Template />} />
 
       {/* Login */}
-      <Route path="/authorization/login" element={<Login/>}/>
-    </Routes>
-  )
-}
+      <Route path="/login" element={<Login />} />
 
-export default AppRoutes
+      {/* Catch-all route */}
+      <Route path="*" element={<Template />} />
+    </Routes>
+  );
+};
+
+export default AppRoutes;
