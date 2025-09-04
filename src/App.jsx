@@ -4,8 +4,8 @@ import { useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify'
 
 import { SidenavProvider } from './components/theme-layout/SidenavContext';
-import Body from './components/theme-layout/body';
-import Login from './components/auth/login';
+import Body from './components/theme-layout/Body'
+import Login from './components/auth/login'
 
 function App() {
   const location = useLocation()
