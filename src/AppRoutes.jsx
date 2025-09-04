@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom"
 import Template from "./components/template/Template"
 import Category from "./components/sku/Category"
 import Sku from "./components/sku/Sku"
-import InSock from "./components/inventory/in-stock"
+import InStock from "./components/inventory/in-stock"
 
 import Login from "./components/auth/login"
 
