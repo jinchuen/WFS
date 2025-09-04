@@ -1,6 +1,6 @@
-import axios from "axios"
+import api from "../api"
 
-const API_URL = "http://127.0.0.1:8000/api/sku"
+const SKU_URL = "/sku"
 
 export const Sku = {
 	getSkuList: async(params = {}) => {
@@ -13,8 +13,8 @@ export const Sku = {
 		if (params.descs) queryParams.append('descs', params.descs)
 		if (params.categoryId) queryParams.append('categoryId', params.categoryId)
 		
-		const url = queryParams.toString() ? `${API_URL}?${queryParams.toString()}` : API_URL
-		const response = await axios.get(url, {
+		const url = queryParams.toString() ? `${SKU_URL}?${queryParams.toString()}` : API_URL
+		const response = await api.get(url, {
 			headers: {
 				'Accept': 'application/json',
 			},
@@ -58,7 +58,7 @@ export const Sku = {
 		}
 	},
 	createUpdateSku: async(data) => {
-		const response = await axios.patch(API_URL, data)
+		const response = await api.patch(SKU_URL, data)
 		if(response.data.result === 'success') {
 			return response.data.data
 		} else {
@@ -66,7 +66,7 @@ export const Sku = {
 		}
 	},
 	deleteSku: async(data) => {
-		const response = await axios.patch(API_URL, data)
+		const response = await api.patch(SKU_URL, data)
 		if(response.status !== 204) {
 			throw new Error(response.data.message)
 		} else {

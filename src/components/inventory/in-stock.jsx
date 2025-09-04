@@ -30,9 +30,20 @@ const InStock = () => {
 	};
 
 	const handleSkuChange = (value, index) => {
-		setSkuList(prev => prev.filter(item => item.id !== value.id));
-	};
+		setFormData(prev => {
+			const skuItems = prev.skuItems.map((item, i) =>
+			i === index
+				? { ...item, skuId: value?.id ?? '', sku: value ?? null }
+				: item
+			);
 
+			// filter SKU list directly
+			filterValidSku(skuItems)
+
+			return { ...prev, skuItems };
+		});
+	};
+	
 	const handleSubmit = (e) => {
 		e.preventDefault();
 	};
@@ -45,6 +56,13 @@ const InStock = () => {
 		} catch {
 			toast.error("An unknown error occurred while fetching sku data. Please try again later.")
 		}
+	}
+
+	function filterValidSku(skuItems) {
+		console.log('skuItems', skuItems);
+		const selectedIds = skuItems.map(item => item.skuId);
+		const filteredSkuList = originalSkuList.filter(sku => !selectedIds.includes(sku.id));
+		setSkuList(filteredSkuList);
 	}
 
   return (
@@ -94,6 +112,7 @@ const InStock = () => {
 					groupBy={(option) => option.category?.code || "No Category"}
 					getOptionLabel={(option) => option.code || ""}
 					disablePortal={true}
+					value={formData.skuItems[index]?.sku || null} 
 					onChange={(_e, value) => { handleSkuChange(value, index);}}
 					renderInput={(params) => (
 					<div ref={params.InputProps.ref}>
@@ -141,9 +160,12 @@ const InStock = () => {
 				<button type="button"
 				className="btn btn-error btn-sm absolute -top-2 -right-2"
 				onClick={() => {
-					const newItems = formData.skuItems.filter((_, i) => i !== index);
+					const newItems = formData.skuItems.filter((_, i) => i !== index)
 					setFormData({ ...formData, skuItems: newItems });
-				}}>
+					filterValidSku(newItems);
+
+				}}
+				>
 				✕
 				</button>
 			</div>

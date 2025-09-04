@@ -8,6 +8,8 @@ import Category from "./components/sku/Category"
 import Sku from "./components/sku/sku"
 import InStock from "./components/inventory/in-stock"
 
+import Login from "./components/auth/login"
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -45,6 +47,9 @@ const AppRoutes = () => {
       
       {/* Help Route */}
       <Route path="/help" element={<Template />} />
+
+      {/* Login */}
+      <Route path="/authorization/login" element={<Login/>}/>
     </Routes>
   )
 }

@@ -1,10 +1,10 @@
-import axios from "axios"
+import api from "../api"
 
-const API_URL = "http://127.0.0.1:8000/api/sku/category"
+const CATEGORY_URL = "/sku/category";
 
 export const getCategory = {
 	getCategoryList: async() => {
-		const response = await axios.get(API_URL)
+		const response = await api.get(CATEGORY_URL)
 		if(response.data.result === 'success') {
 			return response.data.data
 		} else {
@@ -12,7 +12,7 @@ export const getCategory = {
 		}
 	},
 	createUpdateCategory: async(data) => {
-		const response = await axios.patch(API_URL, data)
+		const response = await api.patch(CATEGORY_URL, data)
 		if(response.data.result === 'success') {
 			return response.data.data
 		} else {
@@ -20,7 +20,7 @@ export const getCategory = {
 		}
 	},
 	deleteCategory: async(data) => {
-		const response = await axios.patch(API_URL, data)
+		const response = await api.patch(CATEGORY_URL, data)
 		if(response.status !== 204) {
 			throw new Error(response.data.message)
 		} else {	
