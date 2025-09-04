@@ -12,7 +12,11 @@ const Login = () => {
     e.preventDefault();
     setError(null);
 
+<<<<<<< HEAD
     try { 
+=======
+    try {
+>>>>>>> 81d360cdafa321dde2f5d67a9b44a0328c9fee35
       const data = await getAuthorization.login({ userName: username, password: password });
       
       // Save token & user to localStorage

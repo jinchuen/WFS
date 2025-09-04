@@ -2,7 +2,11 @@
 import axios from "axios";
 
 const api = axios.create({
+<<<<<<< HEAD
   baseURL: import.meta.env.VITE_API_URL,
+=======
+  baseURL: "http://127.0.0.1:8000/api",
+>>>>>>> 81d360cdafa321dde2f5d67a9b44a0328c9fee35
   withCredentials: true // important for cookies
 });
 
