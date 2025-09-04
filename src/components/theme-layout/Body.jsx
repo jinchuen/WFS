@@ -5,7 +5,7 @@ import { useSpring, animated } from '@react-spring/web'
 import AppRoutes from '../../AppRoutes'
 import SideNav from './SideNav'
 import { useSidenav } from './useSidenav'
-import Breadcrumbs from './breadcrumbs'
+import Breadcrumbs from './Breadcrumbs'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
