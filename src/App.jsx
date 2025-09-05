@@ -8,22 +8,22 @@ import Body from './components/theme-layout/Body'
 import Login from './components/auth/login'
 
 function App() {
-  const location = useLocation()
-
-  if (location.pathname.startsWith('/authorization')) {
-    return (
-      <>
-        <ToastContainer role="alert" theme="dark" />
-        <Login />
-      </>
-    )
-  }
+  const location = useLocation();
 
   return (
-    <SidenavProvider>
-      <Body />
-    </SidenavProvider>
+    <>
+      {/* ✅ ToastContainer mounted globally, never unmounts */}
+      <ToastContainer role="alert" theme="dark" />
+
+      {location.pathname.startsWith('/authorization') ? (
+        <Login />
+      ) : (
+        <SidenavProvider>
+          <Body />
+        </SidenavProvider>
+      )}
+    </>
   );
 }
 
-export default App; 
+export default App;

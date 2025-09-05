@@ -6,7 +6,6 @@ import AppRoutes from '../../AppRoutes'
 import SideNav from './SideNav'
 import { useSidenav } from './useSidenav'
 import Breadcrumbs from './Breadcrumbs'
-import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
 const Body = () => {
@@ -33,7 +32,6 @@ const Body = () => {
 
 	return (
 		<>
-				<ToastContainer role="alert" theme="dark" />
 				<SideNav />
 				{/* 🪄 Animated content shift */}
 				<animated.div style={mainSpring}>

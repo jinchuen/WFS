@@ -19,8 +19,8 @@ const AppRoutes = () => {
       <Route path="/analytics/insights" element={<Template />} />
       
       {/* SKU Routes */}
-      <Route path="/sku" element={<Sku />} />
-      <Route path="/sku/category" element={<Category />} />
+      <Route path="/sku-master/sku" element={<Sku />} />
+      <Route path="/sku-master/category" element={<Category />} />
       
       {/* Content Routes */}
       <Route path="/inventory" element={<Navigate to="/inventory/inventory-in-stock" replace />} />

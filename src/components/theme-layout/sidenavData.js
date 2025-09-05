@@ -36,20 +36,20 @@ export const sidenavData = [
     id: 1,
     title: 'SKU Management',
     icon: QrCode,
-    path: '/sku',
+    path: '/sku-master',
     children: [
       {
         id: 2,
         title: 'Category',
         icon: BarChart3,
-        path: '/sku/category',
+        path: '/sku-master/category',
         children: []
       },
       {
         id: 3,
         title: 'SKU',
         icon: Eye,
-        path: '/sku',
+        path: '/sku-master/sku',
         children: []
       }
     ]

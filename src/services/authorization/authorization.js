@@ -13,4 +13,12 @@ export const getAuthorization = {
       throw new Error(response.data.message);
     }
   },
+  logout: async (data) => {
+    const response = await api.post(`${AUTHORIZATION_URL}/logout`)
+    if (response.data.result === "success") {
+      return response.data.data; // { accessToken, user }
+    } else {
+      throw new Error(response.data.message);
+    }
+  }
 };

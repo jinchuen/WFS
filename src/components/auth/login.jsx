@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { getAuthorization } from "../../services/authorization/authorization";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -21,6 +22,7 @@ const Login = () => {
 
 
       // Redirect to dashboard or home
+      toast.success("Login succesfully.")
       navigate("/dashboard");
     } catch (err) {
       console.log('err mesage', err.response.data.errorMessage );

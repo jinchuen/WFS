@@ -1,11 +1,13 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-unused-vars */
 import React, { memo, useCallback, useEffect, useState, useMemo } from 'react'
-import { MenuIcon, X } from 'lucide-react'
+import { MenuIcon, X, LogOut } from 'lucide-react'
 import { useSpring, animated, config } from '@react-spring/web'
 import SidenavItemList from './SidenavItemList'
 import { useSidenav } from './useSidenav'
-import Breadcrumbs from './Breadcrumbs'
+import { getAuthorization } from '../../services/authorization/authorization'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 // Memoized drawer button component
 const DrawerButton = memo(({ onOpen, className = '' }) => (
@@ -37,6 +39,8 @@ CloseButton.displayName = 'CloseButton'
 const SideNav = memo(({ className = '' }) => {
   const { isOpenDrawer, toggleDrawer, setDrawerOpen } = useSidenav()
   const [showButton, setShowButton] = useState(false)
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   // Optimized spring animation with better performance
   const drawerSpring = useSpring({
@@ -72,9 +76,41 @@ const SideNav = memo(({ className = '' }) => {
     }
     return () => clearTimeout(timeoutId)
   }, [isOpenDrawer])
+  
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch {
+        setUser(null);
+      }
+    }
+  }, []);
+
+  const handleLogout = useCallback(async () => {
+    try {
+      const data = await getAuthorization.logout();
+      toast.success(data.message);
+    } catch ( err ) {
+      toast.error("An unknown error occurred. Please refresh the page.");
+    } 
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
+    setUser(null);
+    closeDrawer();
+    navigate("/authorization/login");
+  }, [navigate, closeDrawer]);
+
+  const handleLoginClick = useCallback(() => {
+    if (!user?.username) {
+      navigate("/authorization/login");
+    }
+  }, [navigate, user]);
 
   // Memoized sidebar content
   const sidebarContent = useMemo(() => (
+  
     <div className="flex flex-col h-full bg-base-100 border-r border-base-300 px-1">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-base-300">
@@ -90,11 +126,46 @@ const SideNav = memo(({ className = '' }) => {
       {/* Footer */}
       <div className="p-4 border-t border-base-300">
         <div className="text-xs text-base-content/60 text-center">
-          © 2024 Your App
+
+        <div className="dropdown dropdown-top">
+          {/* LOGIN / USER BOX */}
+          {!user?.username ? (
+            <div
+              role="button"
+              className="border px-20 py-3 text-1xl hover:cursor-pointer"
+              onClick={handleLoginClick}
+            >
+              Login
+            </div>
+          ) : (
+            <div
+              tabIndex={0}
+              className="border px-20 py-3 text-1xl hover:cursor-pointer"
+            >
+              {user.username}
+            </div>
+          )}
+
+          {/* Dropdown CONTENT only when logged in */}
+          {user && (
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li>
+                <button onClick={handleLogout} className="flex items-center gap-2 py-2 px-2">
+                  <LogOut className="w-4 h-4" />
+                  <span>Logout</span>
+                </button>
+              </li>
+            </ul>
+          )}
+        </div>
+        
         </div>
       </div>
     </div>
-  ), [closeDrawer])
+  ), [closeDrawer, user, handleLogout, handleLoginClick])
 
   return (
     <>
